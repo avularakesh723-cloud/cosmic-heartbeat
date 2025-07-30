@@ -12,7 +12,9 @@ A beautiful, interactive dashboard that transforms your life statistics into a c
 - Purple/gold Cosmic Cobalt theme
 
 ## 🌌 Live Demo
-[View Live Demo](https://adellirahulreddy.github.io/cosmic-heartbeat/)
+[View Live Demo](https://avularakesh723-cloud.github.io/cosmic-heartbeat/)
 
 ## 💬 Feedback
-This is a prototype! Share your thoughts: [WhatsApp](https://wa.me/917032784208)
+This is a prototype! Share your thoughts: [WhatsApp](https://wa.me/916304552086)
+
+https://github.com/avularakesh723-cloud/cosmic-heartbeat/blob/main/cosmic-heartbeat-main/index.html
