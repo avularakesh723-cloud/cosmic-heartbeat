@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cosmic-heartbeat - Your Personal Life Universe</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style id="dynamic-styles">
+        /* Cosmic Cobalt Theme - Original Purple/Gold Edition */
+        :root {
+            --font-sans: 'Poppins', sans-serif;
+            --font-tech: 'Orbitron', monospace;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            /* Cosmic Cobalt Purple/Gold Color Palette */
+            --cosmic-purple-deep: #2d1b4e;        /* Deep cosmic purple */
+            --cosmic-purple-primary: #4c1d95;      /* Primary purple */
+            --cosmic-purple-secondary: #7c3aed;    /* Bright purple */
+            --cosmic-purple-light: #a855f7;       /* Light purple */
+            --cosmic-gold-primary: #f59e0b;       /* Primary gold */
+            --cosmic-gold-accent: #fbbf24;        /* Accent gold */
+            --cosmic-gold-light: #fde047;         /* Light gold */
+            --cosmic-dark: #0f0a1a;               /* Deep space dark */
+            --cosmic-darker: #0a0612;             /* Darker space */
+            --cosmic-text: #e2e8f0;               /* Light cosmic text */
+            --cosmic-text-secondary: #94a3b8;     /* Secondary text */
+            --cosmic-text-muted: #64748b;         /* Muted text */
+            
+            /* Background gradients */
+            --bg-dark: var(--cosmic-darker);
+            --bg-gradient: linear-gradient(135deg, 
+                var(--cosmic-darker) 0%, 
+                var(--cosmic-purple-deep) 25%,
+                #1a1332 50%,
+                var(--cosmic-purple-deep) 75%, 
+                var(--cosmic-darker) 100%);
+            
+            /* UI Colors */
+            --text-primary: var(--cosmic-text);
+            --text-secondary: var(--cosmic-text-secondary);
+            --text-tertiary: var(--cosmic-text-muted);
+            --text-accent: var(--cosmic-gold-accent);
+            --card-bg: rgba(76, 29, 149, 0.15);
+            --card-border: rgba(168, 85, 247, 0.3);
+            --border-color: rgba(168, 85, 247, 0.2);
+            --glow-color: var(--cosmic-purple-light);
+            --gold-glow: var(--cosmic-gold-primary);
+            --success-color: #10b981;
+            --warning-color: var(--cosmic-gold-primary);
+            --error-color: #ef4444;
+            
+            --heartbeat-speed: 1.8s;
+            --breathing-speed: 6s;
+            --pulse-speed: 2.5s;
+        }
+
+        /* Splash Screen Styles */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-gradient);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            animation: splashFadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes splashFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .splash-content {
+            background: var(--card-bg);
+            backdrop-filter: blur(25px);
+            border: 2px solid var(--border-color);
+            border-radius: 24px;
+            padding: 3rem 4rem;
+            max-width: 500px;
+            text-align: center;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .splash-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(245, 158, 11, 0.1) 0%, 
+                transparent 50%, 
+                rgba(168, 85, 247, 0.08) 100%);
+            z-index: -1;
+        }
+
+        .splash-content h2 {
+            background: linear-gradient(135deg, 
+                var(--cosmic-gold-primary) 0%, 
+                var(--cosmic-gold-accent) 30%,
+                var(--cosmic-gold-light) 60%,
+                var(--cosmic-purple-light) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-family: var(--font-tech);
+        }
+
+        .splash-content p {
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .splash-content strong {
+            color: var(--cosmic-gold-accent);
+            font-weight: 700;
+        }
+
+        .splash-content a {
+            color: var(--cosmic-gold-accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .splash-content a:hover {
+            color: var(--cosmic-gold-light);
+            text-shadow: 0 0 8px var(--cosmic-gold-accent);
+        }
+
+        .splash-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+
+        .skip-splash-btn {
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, 
+                var(--cosmic-gold-primary) 0%, 
+                var(--cosmic-gold-accent) 50%,
+                var(--cosmic-purple-secondary) 100%);
+            color: white;
+            transition: all 0.3s ease;
+            font-family: var(--font-sans);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .skip-splash-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.6);
+        }
+
+        .countdown-timer {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+        }
+
+        /* Base Styles */
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+            line-height: 1.6;
+        }
+
+        /* Background Effects */
+        .heartbeat-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -3; background: var(--bg-gradient);
+            animation: heartbeat var(--heartbeat-speed) infinite ease-in-out;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.01); filter: brightness(1.1); }
+        }
+
+        .breathing-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(245, 158, 11, 0.06) 0%, transparent 50%);
+            animation: breathing var(--breathing-speed) infinite ease-in-out;
+        }
+        @keyframes breathing {
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.02); opacity: 0.6; }
+        }
+
+        .cosmic-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -1; overflow: hidden;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(251, 191, 36, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(124, 58, 237, 0.05) 0%, transparent 50%);
+        }
+
+        /* Particle System */
+        .life-particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1; overflow: hidden;
+        }
+        .life-particle {
+            position: absolute; border-radius: 50%;
+            animation: float 12s infinite linear;
+        }
+        .life-particle.primary {
+            width: 3px; height: 3px;
+            background: var(--cosmic-gold-accent);
+            box-shadow: 0 0 8px var(--cosmic-gold-accent);
+        }
+        .life-particle.secondary {
+            width: 2px; height: 2px;
+            background: var(--cosmic-purple-light);
+            box-shadow: 0 0 4px var(--cosmic-purple-light);
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(-10px) scale(0.3); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(10px) scale(0.8); opacity: 0; }
+        }
+
+        /* Card Styles */
+        .quantum-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px) saturate(1.1);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            position: relative;
+        }
+        .quantum-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.2);
+            border-color: var(--glow-color);
+        }
+
+        .premium-card {
+            background: linear-gradient(135deg, 
+                rgba(76, 29, 149, 0.15) 0%, 
+                rgba(168, 85, 247, 0.1) 100%);
+            border: 1px solid var(--card-border);
+        }
+
+        /* Typography */
+        .life-level {
+            background: linear-gradient(135deg, 
+                var(--cosmic-gold-primary) 0%, 
+                var(--cosmic-gold-accent) 30%,
+                var(--cosmic-gold-light) 60%,
+                var(--cosmic-purple-light) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        .tech-text {
+            font-family: var(--font-tech);
+            letter-spacing: 0.05em;
+        }
+
+        .mono-text {
+            font-family: var(--font-mono);
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Enhanced Input & Select Field Styling */
+        .input-field {
+            background: rgba(76, 29, 149, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            appearance: none; /* Remove default styling */
+        }
+
+        /* Custom dropdown arrow for select fields */
+        select.input-field {
+            background-image: linear-gradient(45deg, transparent 50%, var(--cosmic-gold-accent) 50%),
+                              linear-gradient(135deg, var(--cosmic-gold-accent) 50%, transparent 50%);
+            background-position: calc(100% - 20px) calc(1em + 2px),
+                                 calc(100% - 15px) calc(1em + 2px);
+            background-size: 5px 5px, 5px 5px;
+            background-repeat: no-repeat;
+            cursor: pointer;
+        }
+
+        .input-field:focus {
+            border-color: var(--gold-glow);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+            outline: none;
+            background: rgba(76, 29, 149, 0.2);
+        }
+
+        /* Style dropdown options */
+        .input-field option {
+            background: var(--cosmic-purple-deep);
+            color: var(--text-primary);
+            padding: 8px;
+            border: none;
+        }
+
+        .input-field option:hover,
+        .input-field option:focus {
+            background: var(--cosmic-purple-secondary);
+            color: var(--cosmic-gold-accent);
+        }
+
+        /* Custom scrollbar for webkit browsers */
+        .input-field::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .input-field::-webkit-scrollbar-track {
+            background: var(--cosmic-purple-deep);
+            border-radius: 4px;
+        }
+
+        .input-field::-webkit-scrollbar-thumb {
+            background: var(--cosmic-gold-accent);
+            border-radius: 4px;
+        }
+
+        .input-field::-webkit-scrollbar-thumb:hover {
+            background: var(--cosmic-gold-primary);
+        }
+
+        /* Form labels with gold accent */
+        .form-label {
+            color: var(--cosmic-gold-accent);
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* Buttons */
+        .primary-button {
+            background: linear-gradient(135deg, 
+                var(--cosmic-gold-primary) 0%, 
+                var(--cosmic-gold-accent) 50%,
+                var(--cosmic-purple-secondary) 100%);
+            color: white;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        }
+        .primary-button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.6);
+        }
+
+        .secondary-button {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .secondary-button:hover {
+            border-color: var(--cosmic-purple-light);
+            background: rgba(168, 85, 247, 0.1);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+
+        /* Redesigned Journey Timeline - Compact & Clean */
+        .cosmic-journey {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .journey-step {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .journey-step:hover {
+            transform: translateX(8px);
+            border-color: var(--gold-glow);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2);
+        }
+
+        .journey-step::before {
+            content: attr(data-step);
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--cosmic-gold-primary), var(--cosmic-purple-light));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+        }
+
+        .journey-icon {
+            font-size: 2rem;
+            margin-right: 1.5rem;
+            filter: drop-shadow(0 0 8px var(--cosmic-gold-accent));
+        }
+
+        .journey-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--cosmic-gold-accent);
+        }
+
+        .journey-content p {
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Connection Line */
+        .cosmic-journey::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 60px;
+            bottom: 60px;
+            width: 2px;
+            background: linear-gradient(180deg, 
+                var(--cosmic-gold-primary) 0%, 
+                var(--cosmic-purple-light) 50%,
+                var(--border-color) 100%);
+            border-radius: 1px;
+        }
+
+        /* Enhanced Animations */
+        .pulse-glow {
+            animation: pulse-glow var(--pulse-speed) infinite ease-in-out;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); 
+                transform: scale(1); 
+            }
+            50% { 
+                box-shadow: 0 0 25px rgba(245, 158, 11, 0.7); 
+                transform: scale(1.01); 
+            }
+        }
+
+        .holographic {
+            background: linear-gradient(45deg, 
+                var(--cosmic-gold-primary) 0%,
+                var(--cosmic-gold-accent) 25%,
+                var(--cosmic-purple-light) 50%,
+                var(--cosmic-gold-light) 75%,
+                var(--cosmic-purple-secondary) 100%);
+            background-size: 300% 300%;
+            animation: holographic 3s ease infinite;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        @keyframes holographic {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Reduced sizing for better proportions */
+        .oversized-fix {
+            font-size: clamp(2rem, 8vw, 4rem) !important;
+        }
+
+        .title-fix {
+            font-size: clamp(1.5rem, 4vw, 2.5rem) !important;
+        }
+
+        .subtitle-fix {
+            font-size: clamp(1rem, 2vw, 1.25rem) !important;
+        }
+
+        /* Modal Styles */
+        #input-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 6, 18, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: all 0.3s ease;
+        }
+        #input-modal-overlay.visible {
+            opacity: 1;
+        }
+
+        /* Glass Effect */
+        .glass-effect {
+            backdrop-filter: blur(15px) saturate(1.1);
+            background: rgba(76, 29, 149, 0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Utility Classes */
+        .fade-in { 
+            animation: fadeIn 1s ease forwards; 
+            opacity: 0; 
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-delay-1 { animation-delay: 0.2s; }
+        .fade-in-delay-2 { animation-delay: 0.4s; }
+        .fade-in-delay-3 { animation-delay: 0.6s; }
+
+        .hidden { display: none !important; }
+        .pointer-events-none { pointer-events: none; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cosmic-journey::before { display: none; }
+            .journey-step::before { position: relative; left: 0; top: 0; margin-bottom: 1rem; }
+            .journey-step { flex-direction: column; text-align: center; }
+            .journey-icon { margin: 0 0 1rem 0; }
+            
+            .splash-content {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+                font-size: 1rem;
+            }
+            
+            .splash-content h2 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body class="text-white" id="app-body">
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="countdown-timer" id="countdown-timer">8s</div>
+            <h2>🚀 cosmic-heartbeat</h2>
+            <p>This site is a <strong>prototype</strong> built by <strong>Adelli Rahul Reddy</strong>.</p>
+            <p>Please leave feedback at <a href="https://wa.me/917032784208" target="_blank" rel="noopener noreferrer">wa.me/917032784208</a></p>
+            <p>Full advanced site will depend on your reviews. Further we will add APIs, health data, and more.</p>
+            <div class="splash-buttons">
+                <button id="skip-splash-btn" class="skip-splash-btn">Skip ⏭️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Effects -->
+    <div class="heartbeat-bg"></div>
+    <div class="breathing-layer"></div>
+    <div class="cosmic-overlay"></div>
+    <div class="life-particles" id="life-particles"></div>
+    
+    <!-- Header -->
+    <header class="sticky top-0 z-50 glass-effect" style="border-radius: 0; border-left: none; border-right: none; border-top: none;">
+        <div class="container mx-auto flex justify-between items-center px-6 py-4">
+            <div class="flex items-center space-x-4">
+                <div class="text-xl font-bold holographic tech-text">⚡ cosmic-heartbeat</div>
+                <div class="text-sm opacity-80 mono-text" id="user-level">Level <span class="life-level">1</span></div>
+            </div>
+            <nav class="hidden md:flex items-center space-x-8" id="main-nav">
+                <a href="#home" class="hover:text-accent transition-all duration-300 font-medium text-sm">Home</a>
+                <a href="#universe" class="hover:text-accent transition-all duration-300 font-medium text-sm">My Universe</a>
+                <a href="#analytics" class="hover:text-accent transition-all duration-300 font-medium text-sm">Analytics</a>
+                <a href="#timeline" class="hover:text-accent transition-all duration-300 font-medium text-sm">Timeline</a>
+            </nav>
+            <div class="flex items-center space-x-3">
+                <button id="sync-universe-btn" class="primary-button px-4 py-2 text-sm font-bold rounded-full">✨ Sync Your Universe</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8">
+        <!-- Welcome Screen -->
+        <section id="welcome-screen">
+            <section id="home-landing" class="text-center py-16">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="oversized-fix font-black mb-6 tech-text holographic">Your Life is Not a Number</h1>
+                    <p class="title-fix mb-8 text-secondary font-light fade-in fade-in-delay-1">It's a universe of infinite moments. Begin your cosmic journey through spacetime.</p>
+                    <div class="fade-in fade-in-delay-2">
+                        <button id="start-journey-btn" class="primary-button py-3 px-8 rounded-full subtitle-fix font-bold pulse-glow">✨ Start Your Cosmic Journey</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- World Stats -->
+            <section id="world-stats-landing" class="py-16">
+                <div class="text-center mb-12">
+                    <h2 class="title-fix font-bold mb-4 life-level">🌍 What's Happening in the World...</h2>
+                    <p class="subtitle-fix text-secondary">Real-time global statistics updating every second</p>
+                </div>
+                <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-center mb-8 life-level">Every Second</h3>
+                        <div class="grid grid-cols-2 gap-4" id="stats-per-second"></div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-center mb-8 life-level">So Far Today</h3>
+                        <div class="grid grid-cols-2 gap-4" id="stats-per-day"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Redesigned "Your Journey to the Cosmos" Section -->
+            <section id="how-it-works" class="py-16">
+                <div class="text-center mb-12">
+                    <h2 class="title-fix font-bold mb-4 life-level">⚡ Your Journey to the Cosmos</h2>
+                    <p class="subtitle-fix text-secondary">Three simple steps to unlock your personal universe</p>
+                </div>
+                
+                <div class="cosmic-journey">
+                    <div class="journey-step fade-in" data-step="1">
+                        <div class="journey-icon">⏰</div>
+                        <div class="journey-content">
+                            <h3>Enter Your Origin Point</h3>
+                            <p>Provide your birth date to establish your unique position in the spacetime continuum and unlock your personal metrics.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="journey-step fade-in fade-in-delay-1" data-step="2">
+                        <div class="journey-icon">✨</div>
+                        <div class="journey-content">
+                            <h3>Sync Your Consciousness</h3>
+                            <p>Select your current mood and cosmic alignment to personalize your universe's visual theme and insights.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="journey-step fade-in fade-in-delay-2" data-step="3">
+                        <div class="journey-icon">🚀</div>
+                        <div class="journey-content">
+                            <h3>Explore Your Universe</h3>
+                            <p>Witness your life unfold through dynamic statistics, advanced analytics, and personalized cosmic insights.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Preview -->
+            <section class="py-16">
+                <div class="text-center mb-12">
+                    <h2 class="title-fix font-bold mb-4 life-level">✨ Experience Your Life Like Never Before</h2>
+                    <p class="subtitle-fix text-secondary">Advanced features that make your journey unique</p>
+                </div>
+                <div class="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="premium-card quantum-card p-6 text-center">
+                        <div class="text-3xl mb-4">💓</div>
+                        <h3 class="text-lg font-bold mb-3 life-level">Real-Time Heartbeats</h3>
+                        <p class="text-secondary text-sm">See your heart's rhythm since birth, updating every second with smooth animations.</p>
+                    </div>
+                    <div class="premium-card quantum-card p-6 text-center">
+                        <div class="text-3xl mb-4">🌬️</div>
+                        <h3 class="text-lg font-bold mb-3 life-level">Breath Counter</h3>
+                        <p class="text-secondary text-sm">Track every breath you've taken on your life journey with precision timing.</p>
+                    </div>
+                    <div class="premium-card quantum-card p-6 text-center">
+                        <div class="text-3xl mb-4">🎂</div>
+                        <h3 class="text-lg font-bold mb-3 life-level">Birthday Countdown</h3>
+                        <p class="text-secondary text-sm">See exactly how many days, hours, and minutes until your next birthday.</p>
+                    </div>
+                    <div class="premium-card quantum-card p-6 text-center">
+                        <div class="text-3xl mb-4">🌟</div>
+                        <h3 class="text-lg font-bold mb-3 life-level">Life Achievements</h3>
+                        <p class="text-secondary text-sm">Unlock cosmic milestones and achievements as you reach significant life goals.</p>
+                    </div>
+                    <div class="premium-card quantum-card p-6 text-center">
+                        <div class="text-3xl mb-4">🎨</div>
+                        <h3 class="text-lg font-bold mb-3 life-level">Dynamic Themes</h3>
+                        <p class="text-secondary text-sm">Advanced interface that adapts to your current emotional state and preferences.</p>
+                    </div>
+                    <div class="premium-card quantum-card p-6 text-center">
+                        <div class="text-3xl mb-4">🌍</div>
+                        <h3 class="text-lg font-bold mb-3 life-level">World Context</h3>
+                        <p class="text-secondary text-sm">See what happens globally during your lifetime with real-time world statistics.</p>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Results Screen -->
+        <section id="results-screen" class="hidden">
+            <!-- Hero Section -->
+            <section id="home" class="text-center py-16">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="title-fix font-black mb-4 tech-text">Welcome, <span id="display-name" class="holographic">Traveler</span></h1>
+                    <p class="subtitle-fix mb-8 text-secondary font-light">Your personal universe is synchronized and online.</p>
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <div class="premium-card quantum-card p-6">
+                            <div class="text-2xl font-black life-level" id="heartbeats-count">0</div>
+                            <div class="text-secondary text-sm font-medium">Heartbeats</div>
+                        </div>
+                        <div class="premium-card quantum-card p-6">
+                            <div class="text-2xl font-black life-level" id="breaths-count">0</div>
+                            <div class="text-secondary text-sm font-medium">Breaths</div>
+                        </div>
+                        <div class="premium-card quantum-card p-6">
+                            <div class="text-2xl font-black life-level" id="moments-count">0</div>
+                            <div class="text-secondary text-sm font-medium">Moments</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Universe Section -->
+            <section id="universe" class="py-16">
+                <div class="text-center mb-12">
+                    <h2 class="title-fix font-bold mb-4 life-level">🌌 Your Personal Universe</h2>
+                    <p class="subtitle-fix text-secondary">A comprehensive view of your cosmic journey</p>
+                </div>
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <div class="space-y-8 lg:col-span-1">
+                        <div class="premium-card quantum-card p-6">
+                            <h3 class="text-xl font-bold mb-4 life-level">🌟 Life Metrics</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">Years Lived</span>
+                                    <span id="years-alive" class="font-bold text-accent">0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">Life Stage</span>
+                                    <span id="life-stage" class="font-bold text-accent text-sm">Explorer</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">Current Mood</span>
+                                    <span id="display-mood" class="font-bold text-accent text-sm">Calm</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="premium-card quantum-card p-6">
+                            <h3 class="text-xl font-bold mb-4 life-level">🏆 Achievements</h3>
+                            <div id="achievements-list" class="space-y-3"></div>
+                        </div>
+                    </div>
+                    <div class="space-y-8 lg:col-span-2">
+                        <div class="premium-card quantum-card p-8">
+                            <h3 class="text-xl font-bold mb-6 life-level">🛤️ Your Journey Timeline</h3>
+                            <div id="timeline-list" class="space-y-6"></div>
+                        </div>
+                        <div class="premium-card quantum-card p-6">
+                            <h3 class="text-xl font-bold mb-4 life-level">🔮 Future Possibilities</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between">
+                                    <span class="text-sm">Next Birthday</span>
+                                    <span class="text-accent font-bold text-sm" id="countdown-to-birthday">Calculating...</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm">Next Milestone</span>
+                                    <span class="text-accent font-bold text-sm" id="next-milestone">Discovering...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Analytics Section -->
+            <section id="analytics" class="py-16">
+                <div class="text-center mb-12">
+                    <h2 class="title-fix font-bold mb-4 life-level">📊 Advanced Life Analytics</h2>
+                    <p class="subtitle-fix text-secondary">Deep insights into your cosmic existence</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="premium-card quantum-card p-6 flex flex-col items-center text-center">
+                        <h3 class="text-lg font-bold mb-4 life-level">Time Allocation</h3>
+                        <div id="pie-chart-container" class="mb-4" style="width: 120px; height: 120px;"></div>
+                        <div id="pie-chart-legend" class="text-xs space-y-1"></div>
+                    </div>
+                    <div class="premium-card quantum-card p-6 text-center">
+                        <h3 class="text-lg font-bold mb-4 life-level">Cosmic Identity</h3>
+                        <div id="cosmic-identity-list" class="space-y-3"></div>
+                    </div>
+                    <div class="premium-card quantum-card p-6 text-center">
+                        <h3 class="text-lg font-bold mb-4 life-level">Generational Context</h3>
+                        <div id="generational-context" class="text-secondary text-sm"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cosmic Alignments -->
+            <section id="alignments" class="py-16">
+                <div class="text-center mb-12">
+                    <h2 class="title-fix font-bold mb-4 life-level">✨ Daily Cosmic Forecast</h2>
+                    <p class="subtitle-fix text-secondary">Your personalized cosmic guidance</p>
+                </div>
+                <div class="premium-card quantum-card p-8 max-w-4xl mx-auto text-center">
+                    <p class="text-base text-secondary mb-4">Based on your sign, <b id="alignment-sign" class="text-accent">Aries</b>, your cosmic frequency today suggests:</p>
+                    <p id="alignment-description" class="text-lg font-bold life-level tech-text">A day of bold action and new beginnings.</p>
+                </div>
+            </section>
+
+            <!-- About Me Section -->
+            <section id="about-me" class="py-16">
+                <div class="text-center mb-12">
+                    <h2 class="title-fix font-bold mb-4 life-level">👤 About Me</h2>
+                    <p class="subtitle-fix text-secondary">Your personal cosmic narrative</p>
+                </div>
+                <div class="premium-card quantum-card p-8 max-w-4xl mx-auto">
+                    <p class="text-base text-secondary leading-relaxed text-center" id="about-me-narrative"></p>
+                </div>
+            </section>
+
+            <!-- Create New Card Button -->
+            <div class="text-center py-12">
+                <button id="create-new-btn" class="secondary-button px-8 py-3 text-base font-bold rounded-full">Create a New Universe</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Fixed Input Modal with Proper Theme -->
+    <div id="input-modal-overlay" class="hidden pointer-events-none">
+        <div id="input-modal-content" class="w-full max-w-2xl mx-4">
+            <div class="premium-card quantum-card p-8">
+                <h2 class="text-2xl font-bold mb-3 life-level text-center tech-text">Create Your Personal Universe</h2>
+                <p class="text-center text-secondary mb-8">Tell us about your cosmic journey to unlock your personalized dashboard</p>
+                <form id="user-details-form">
+                    <div class="mb-4">
+                        <label class="form-label">What should we call you?</label>
+                        <input type="text" id="user-name" name="name" placeholder="Your name or cosmic alias" class="input-field w-full" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">When did your journey begin?</label>
+                        <input type="date" id="birth-date" name="birthDate" class="input-field w-full" required>
+                        <div id="date-error" class="error-message hidden text-red-400 text-sm mt-1"></div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">How are you feeling right now?</label>
+                        <select id="current-mood" name="mood" class="input-field w-full">
+                            <option value="calm">🧘 Calm & Centered</option>
+                            <option value="happy">😊 Happy & Joyful</option>
+                            <option value="energetic">⚡ Energetic & Dynamic</option>
+                            <option value="contemplative">🤔 Contemplative & Thoughtful</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">What is your Zodiac sign?</label>
+                        <select id="horoscope-sign" name="horoscope" class="input-field w-full">
+                            <option value="Aries">♈ Aries</option>
+                            <option value="Taurus">♉ Taurus</option>
+                            <option value="Gemini">♊ Gemini</option>
+                            <option value="Cancer">♋ Cancer</option>
+                            <option value="Leo">♌ Leo</option>
+                            <option value="Virgo">♍ Virgo</option>
+                            <option value="Libra">♎ Libra</option>
+                            <option value="Scorpio">♏ Scorpio</option>
+                            <option value="Sagittarius">♐ Sagittarius</option>
+                            <option value="Capricorn">♑ Capricorn</option>
+                            <option value="Aquarius">♒ Aquarius</option>
+                            <option value="Pisces">♓ Pisces</option>
+                        </select>
+                    </div>
+                    <div class="mb-6 p-4 glass-effect rounded-xl">
+                        <p class="text-sm text-secondary"><strong class="text-accent">🔒 Privacy First:</strong> All your data stays on your device. Nothing is sent to external servers.</p>
+                    </div>
+                    <div class="flex gap-4">
+                        <button type="button" id="close-modal-btn" class="secondary-button w-full py-3 px-4 rounded-full font-bold">Cancel</button>
+                        <button type="submit" class="primary-button w-full py-3 px-4 rounded-full font-bold">🚀 Create My Universe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="glass-effect py-8 mt-16" style="border-radius: 0;">
+        <div class="container mx-auto px-6 text-center">
+            <div class="holographic text-lg font-bold mb-3 tech-text">✨ cosmic-heartbeat</div>
+            <p class="text-secondary text-sm">Created with cosmic energy by Rahul Reddy</p>
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced LiveTimeCard Pro with Splash Screen
+        class LiveTimeCardPro {
+            constructor() {
+                this.userData = null;
+                this.lifeLevel = 1;
+                this.updateInterval = null;
+                this.particleInterval = null;
+                this.splashTimeout = null;
+                this.countdownInterval = null;
+
+                this.worldStatsPool = [
+                    { label: '👶 Births', rate: 4.3, icon: '👶' }, 
+                    { label: '🔍 Google Searches', rate: 99000, icon: '🔍' }, 
+                    { label: '🐦 Tweets', rate: 9000, icon: '🐦' }, 
+                    { label: '📧 Emails Sent', rate: 3500000, icon: '📧' }, 
+                    { label: '📸 Photos Taken', rate: 4000, icon: '📸' }, 
+                    { label: '🎥 Video Hours', rate: 80000, icon: '🎥' },
+                    { label: '💰 Money Spent', rate: 50000, icon: '💰' },
+                    { label: '🌱 Trees Cut', rate: 15, icon: '🌱' },
+                    { label: '☕ Cups of Coffee', rate: 2800, icon: '☕' },
+                    { label: '🚗 Cars Sold', rate: 85, icon: '🚗' }
+                ];
+                this.currentWorldStats = [];
+
+                this.init();
+            }
+            
+            init() {
+                this.setupSplashScreen();
+                this.setupEventListeners();
+                this.checkExistingData();
+                this.setupParticleSystem();
+                this.setupWorldStats();
+                this.startWorldStatsUpdate();
+            }
+
+            setupSplashScreen() {
+                const splash = document.getElementById('splash-screen');
+                const skipBtn = document.getElementById('skip-splash-btn');
+                const countdownEl = document.getElementById('countdown-timer');
+                
+                let timeLeft = 10; // 8 seconds
+                
+                // Update countdown every second
+                this.countdownInterval = setInterval(() => {
+                    timeLeft--;
+                    countdownEl.textContent = `${timeLeft}s`;
+                    
+                    if (timeLeft <= 0) {
+                        this.hideSplash();
+                    }
+                }, 1000);
+                
+                // Auto hide after 8 seconds
+                this.splashTimeout = setTimeout(() => {
+                    this.hideSplash();
+                }, 8000);
+                
+                // Skip button functionality
+                skipBtn.addEventListener('click', () => {
+                    this.hideSplash();
+                });
+                
+                // Prevent body scroll while splash is active
+                document.body.style.overflow = 'hidden';
+            }
+            
+            hideSplash() {
+                const splash = document.getElementById('splash-screen');
+                
+                // Clear timers
+                if (this.splashTimeout) clearTimeout(this.splashTimeout);
+                if (this.countdownInterval) clearInterval(this.countdownInterval);
+                
+                // Fade out splash screen
+                splash.style.opacity = '0';
+                splash.style.transition = 'opacity 0.5s ease-out';
+                
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 500);
+            }
+
+            setupEventListeners() {
+                document.getElementById('start-journey-btn').addEventListener('click', () => this.showInputForm());
+                document.getElementById('sync-universe-btn').addEventListener('click', () => this.showInputForm());
+                
+                document.getElementById('user-details-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleFormSubmission();
+                });
+
+                document.getElementById('close-modal-btn').addEventListener('click', () => this.hideInputForm());
+                
+                document.getElementById('create-new-btn').addEventListener('click', () => {
+                    if (confirm('Are you sure you want to create a new universe? This will clear your current data.')) {
+                        localStorage.removeItem('livetimecard_user');
+                        window.location.reload();
+                    }
+                });
+
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            target.scrollIntoView({ 
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    });
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.hideInputForm();
+                        // Also allow escape to skip splash
+                        if (document.getElementById('splash-screen').style.display !== 'none') {
+                            this.hideSplash();
+                        }
+                    }
+                });
+            }
+
+            checkExistingData() {
+                const stored = localStorage.getItem('livetimecard_user');
+                if (stored) {
+                    try {
+                        this.userData = JSON.parse(stored);
+                        // Don't auto-show results, let splash complete first
+                        setTimeout(() => {
+                            this.showResults();
+                        }, 8500); // Show after splash is definitely gone
+                    } catch (e) {
+                        localStorage.removeItem('livetimecard_user');
+                    }
+                }
+            }
+
+            showInputForm() {
+                const modal = document.getElementById('input-modal-overlay');
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                
+                setTimeout(() => {
+                    modal.classList.add('visible');
+                    modal.classList.remove('pointer-events-none');
+                }, 10);
+                
+                document.getElementById('birth-date').setAttribute('max', new Date().toISOString().split('T')[0]);
+                document.getElementById('user-name').focus();
+            }
+
+            hideInputForm() {
+                const modal = document.getElementById('input-modal-overlay');
+                modal.classList.remove('visible');
+                modal.classList.add('pointer-events-none');
+                document.body.style.overflow = '';
+                
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+
+            handleFormSubmission() {
+                const birthDate = document.getElementById('birth-date').value;
+                const errorEl = document.getElementById('date-error');
+                
+                if (!birthDate || new Date(birthDate) > new Date()) {
+                    errorEl.textContent = 'Please select a valid date in the past.';
+                    errorEl.classList.remove('hidden');
+                    return;
+                }
+                
+                errorEl.classList.add('hidden');
+                
+                const formData = new FormData(document.getElementById('user-details-form'));
+                this.userData = {
+                    name: formData.get('name'), 
+                    birthDate: formData.get('birthDate'),
+                    mood: formData.get('mood'), 
+                    horoscope: formData.get('horoscope'),
+                    createdAt: new Date().toISOString(),
+                    level: 1, 
+                    achievements: [],
+                    memories: 0,
+                    totalSessions: 1
+                };
+                
+                localStorage.setItem('livetimecard_user', JSON.stringify(this.userData));
+                this.hideInputForm();
+                
+                setTimeout(() => {
+                    this.showResults();
+                }, 500);
+            }
+
+            showResults() {
+                document.getElementById('welcome-screen').classList.add('hidden');
+                document.getElementById('results-screen').classList.remove('hidden');
+                document.getElementById('sync-universe-btn').classList.add('hidden');
+                
+                this.updateAllDynamicContent();
+                this.startRealTimeUpdates();
+            }
+
+            updateAllDynamicContent() {
+                if (!this.userData) return;
+                
+                const birth = new Date(this.userData.birthDate);
+                const now = new Date();
+                const ageInYears = (now - birth) / (31557600000);
+                
+                document.getElementById('display-name').textContent = this.userData.name;
+                document.getElementById('years-alive').textContent = Math.floor(ageInYears);
+                document.getElementById('life-stage').textContent = this.getLifeStage(Math.floor(ageInYears));
+                document.getElementById('display-mood').textContent = this.getMoodDisplay(this.userData.mood);
+                
+                this.populateTimeline(Math.floor(ageInYears));
+                this.updateNextMilestone();
+                this.populateAboutMe();
+                this.updateAnalytics(ageInYears);
+                this.updateCosmicAlignment();
+                this.populateAchievements();
+                this.startBirthdayCountdown(birth);
+            }
+
+            populateTimeline(age) {
+                const container = document.getElementById('timeline-list');
+                const birth = new Date(this.userData.birthDate);
+                
+                let events = [
+                    { year: birth.getFullYear(), title: '🌟 Birth', desc: 'The beginning of your cosmic journey.' },
+                ];
+                
+                if (age >= 1) events.push({ year: birth.getFullYear() + 1, title: '💓 First Million Heartbeats', desc: 'Reached approximately 11.5 days after birth.' });
+                if (age >= 5) events.push({ year: birth.getFullYear() + 5, title: '🎓 Learning Begins', desc: 'First steps into education.' });
+                if (age >= 10) events.push({ year: birth.getFullYear() + 10, title: '🌍 Decade Mark', desc: 'Ten years of experiences.' });
+                if (age >= 18) events.push({ year: birth.getFullYear() + 18, title: '🧑‍🎓 Adulthood', desc: 'Legal adulthood begins.' });
+                
+                events.push({ year: new Date().getFullYear(), title: '⚡ Present Moment', desc: 'Right now, this moment.' });
+
+                container.innerHTML = events.map(event => `
+                    <div class="border-l-2 pl-4 pb-4" style="border-color: var(--cosmic-gold-accent)">
+                        <h4 class="font-bold text-base mb-1 life-level">${event.title} (${event.year})</h4>
+                        <p class="text-secondary text-sm">${event.desc}</p>
+                    </div>
+                `).join('');
+            }
+
+            populateAboutMe() {
+                if (!this.userData) return;
+                
+                const narrativeEl = document.getElementById('about-me-narrative');
+                const age = Math.floor((new Date() - new Date(this.userData.birthDate)) / 31557600000);
+                const stage = this.getLifeStage(age);
+                const mood = this.getMoodDisplay(this.userData.mood);
+                const birthYear = new Date(this.userData.birthDate).getFullYear();
+                const generation = this.getGeneration(birthYear);
+
+                const narrative = `I am ${this.userData.name}, a ${generation} cosmic traveler with ${age} years of experience in this universe. Currently navigating the '${stage}' phase of my journey, I approach each day with ${mood.split(' ')[1].toLowerCase()} energy. My story began in ${birthYear}, and since then, I've experienced approximately ${this.formatLargeNumber((Date.now() - new Date(this.userData.birthDate).getTime()) / 1000 * 1.2)} heartbeats and counting.`;
+
+                narrativeEl.textContent = narrative;
+            }
+
+            populateAchievements() {
+                const container = document.getElementById('achievements-list');
+                const secondsAlive = (Date.now() - new Date(this.userData.birthDate).getTime()) / 1000;
+                const heartbeats = Math.floor(secondsAlive * 1.2);
+                const age = Math.floor(secondsAlive / 31557600);
+
+                const achievements = [
+                    { title: '🌟 First Breath', unlocked: true },
+                    { title: '💓 100K Heartbeats', unlocked: heartbeats >= 100000 },
+                    { title: '🎂 First Birthday', unlocked: age >= 1 },
+                    { title: '💫 Million Heartbeats', unlocked: heartbeats >= 1000000 },
+                    { title: '🌍 Decade Explorer', unlocked: age >= 10 }
+                ];
+
+                container.innerHTML = achievements.map(achievement => `
+                    <div class="flex items-center space-x-2 text-xs ${achievement.unlocked ? 'text-yellow-400' : 'text-gray-500'}">
+                        <span class="${achievement.unlocked ? '' : 'grayscale'}">${achievement.title.split(' ')[0]}</span>
+                        <span>${achievement.title.substring(2)}</span>
+                    </div>
+                `).join('');
+            }
+
+            updateNextMilestone() {
+                const secondsAlive = (Date.now() - new Date(this.userData.birthDate).getTime()) / 1000;
+                const heartbeats = Math.floor(secondsAlive * 1.2);
+                
+                const milestones = [
+                    { value: 1_000_000, current: heartbeats, label: '1 Million Heartbeats' },
+                    { value: 10_000_000, current: heartbeats, label: '10 Million Heartbeats' },
+                    { value: 100_000_000, current: heartbeats, label: '100 Million Heartbeats' },
+                    { value: 1_000_000_000, current: heartbeats, label: '1 Billion Heartbeats' }
+                ];
+                
+                for (const milestone of milestones) {
+                    if (milestone.current < milestone.value) {
+                        document.getElementById('next-milestone').textContent = milestone.label;
+                        return;
+                    }
+                }
+                document.getElementById('next-milestone').textContent = 'Cosmic Legacy';
+            }
+
+            startBirthdayCountdown(birthDate) {
+                const countdownEl = document.getElementById('countdown-to-birthday');
+                if (!countdownEl) return;
+                
+                const updateCountdown = () => {
+                    const now = new Date();
+                    let nextBirthday = new Date(now.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+                    
+                    if (nextBirthday < now) {
+                        nextBirthday.setFullYear(now.getFullYear() + 1);
+                    }
+                    
+                    const diff = nextBirthday - now;
+                    const days = Math.floor(diff / 86400000);
+                    const hours = Math.floor((diff % 86400000) / 3600000);
+                    const minutes = Math.floor((diff % 3600000) / 60000);
+                    
+                    countdownEl.textContent = `${days}d ${hours}h ${minutes}m`;
+                };
+                
+                updateCountdown();
+                setInterval(updateCountdown, 60000);
+            }
+
+            startRealTimeUpdates() {
+                if (this.updateInterval) clearInterval(this.updateInterval);
+                
+                this.updateInterval = setInterval(() => {
+                    this.updateLifeCounters();
+                }, 1000);
+            }
+
+            updateLifeCounters() {
+                if (!this.userData) return;
+                
+                const secondsAlive = (Date.now() - new Date(this.userData.birthDate).getTime()) / 1000;
+                const counters = {
+                    heartbeats: Math.floor(secondsAlive * 1.2),
+                    breaths: Math.floor(secondsAlive * 0.25),
+                    moments: Math.floor(secondsAlive * 5)
+                };
+                
+                Object.keys(counters).forEach(key => {
+                    const element = document.getElementById(`${key}-count`);
+                    if (element) {
+                        element.textContent = this.formatLargeNumber(counters[key]);
+                    }
+                });
+            }
+
+            updateAnalytics(ageInYears) {
+                this.drawPieChart(ageInYears);
+                this.populateCosmicIdentity();
+                this.populateGenerationalContext();
+            }
+
+            drawPieChart(age) {
+                const container = document.getElementById('pie-chart-container');
+                const legend = document.getElementById('pie-chart-legend');
+                
+                const data = { sleep: 33, work: 25, leisure: 22, essential: 20 };
+                
+                let cumulativePercent = 0;
+                let gradientParts = [];
+                legend.innerHTML = '';
+                
+                const colors = { 
+                    sleep: 'var(--cosmic-gold-primary)', 
+                    work: 'var(--cosmic-purple-secondary)', 
+                    leisure: 'var(--cosmic-gold-accent)', 
+                    essential: 'var(--cosmic-purple-light)' 
+                };
+                
+                for (const [key, value] of Object.entries(data)) {
+                    gradientParts.push(`${colors[key]} ${cumulativePercent}% ${cumulativePercent + value}%`);
+                    cumulativePercent += value;
+                    
+                    legend.innerHTML += `
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center">
+                                <span class="inline-block w-2 h-2 rounded-full mr-1" style="background-color: ${colors[key]}"></span>
+                                <span class="capitalize">${key}</span>
+                            </div>
+                            <span class="font-bold">${value}%</span>
+                        </div>
+                    `;
+                }
+                
+                container.style.background = `conic-gradient(${gradientParts.join(', ')})`;
+                container.style.borderRadius = '50%';
+                container.innerHTML = '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--cosmic-dark); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 10px;">Life</div>';
+            }
+
+            populateCosmicIdentity() {
+                const container = document.getElementById('cosmic-identity-list');
+                const birth = new Date(this.userData.birthDate);
+                const day = birth.getDate();
+                const month = birth.getMonth() + 1;
+                const year = birth.getFullYear();
+                
+                const zodiac = this.getZodiacSign(day, month);
+                const birthstone = this.getBirthstone(month);
+                const chineseZodiac = this.getChineseZodiac(year);
+                
+                container.innerHTML = `
+                    <div class="space-y-3 text-xs">
+                        <div class="flex justify-between items-center">
+                            <span>Zodiac</span>
+                            <span class="font-bold text-accent">${zodiac.sign}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Birthstone</span>
+                            <span class="font-bold text-accent">${birthstone}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Chinese</span>
+                            <span class="font-bold text-accent">${chineseZodiac}</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            populateGenerationalContext() {
+                const container = document.getElementById('generational-context');
+                const year = new Date(this.userData.birthDate).getFullYear();
+                const generation = this.getGeneration(year);
+                
+                container.innerHTML = `
+                    <div class="text-center">
+                        <p class="text-base font-bold life-level mb-2">${generation}</p>
+                        <p class="text-xs leading-relaxed">Your generation brings unique perspectives shaped by technological and social evolution.</p>
+                    </div>
+                `;
+            }
+
+            updateCosmicAlignment() {
+                const signEl = document.getElementById('alignment-sign');
+                const descEl = document.getElementById('alignment-description');
+                const sign = this.userData.horoscope;
+                
+                const forecasts = {
+                    Aries: 'A day of bold action and new beginnings awaits you.',
+                    Taurus: 'Focus on grounding yourself and life\'s simple pleasures.',
+                    Gemini: 'Communication flows freely - share your ideas.',
+                    Cancer: 'Nurture relationships and emotional well-being.',
+                    Leo: 'Your time to shine and express creativity.',
+                    Virgo: 'Find joy in organization and helping others.',
+                    Libra: 'Seek balance and harmony in all endeavors.',
+                    Scorpio: 'Embrace transformation and inner wisdom.',
+                    Sagittarius: 'Adventure calls - explore new possibilities.',
+                    Capricorn: 'Focus on long-term goals and projects.',
+                    Aquarius: 'Connect with community and innovation.',
+                    Pisces: 'Trust intuition and let dreams guide you.'
+                };
+                
+                signEl.textContent = sign;
+                descEl.textContent = forecasts[sign] || 'A day filled with cosmic possibilities.';
+            }
+
+            setupParticleSystem() {
+                const container = document.getElementById('life-particles');
+                
+                const createParticle = () => {
+                    if (document.hidden) return;
+                    
+                    const particleTypes = ['primary', 'secondary'];
+                    const randomType = particleTypes[Math.floor(Math.random() * particleTypes.length)];
+                    
+                    const particle = document.createElement('div');
+                    particle.className = `life-particle ${randomType}`;
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 2 + 's';
+                    
+                    container.appendChild(particle);
+                    
+                    setTimeout(() => particle.remove(), 12000);
+                };
+                
+                this.particleInterval = setInterval(createParticle, 1000);
+            }
+
+            setupWorldStats() {
+                this.currentWorldStats = this.worldStatsPool
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 4);
+                
+                const perSecondHTML = this.currentWorldStats.map((stat) => `
+                    <div class="premium-card quantum-card p-4 text-center">
+                        <div class="text-xl mb-2">${stat.icon}</div>
+                        <div class="text-lg font-bold life-level">${this.formatNumber(stat.rate)}</div>
+                        <div class="text-xs text-secondary mt-1">${stat.label}</div>
+                    </div>
+                `).join('');
+                
+                const perDayHTML = this.currentWorldStats.map((stat, i) => `
+                    <div class="premium-card quantum-card p-4 text-center">
+                        <div class="text-xl mb-2">${stat.icon}</div>
+                        <div class="text-lg font-bold life-level" id="stat-value-${i}-day">${this.formatNumber(this.getDailyValue(stat.rate))}</div>
+                        <div class="text-xs text-secondary mt-1">${stat.label}</div>
+                    </div>
+                `).join('');
+                
+                document.getElementById('stats-per-second').innerHTML = perSecondHTML;
+                document.getElementById('stats-per-day').innerHTML = perDayHTML;
+            }
+
+            getDailyValue(rate) {
+                const now = new Date();
+                const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const secondsSinceStartOfDay = (now - startOfDay) / 1000;
+                return Math.floor(rate * secondsSinceStartOfDay);
+            }
+
+            startWorldStatsUpdate() {
+                setInterval(() => {
+                    this.currentWorldStats.forEach((stat, i) => {
+                        const el = document.getElementById(`stat-value-${i}-day`);
+                        if (el) {
+                            const newValue = this.getDailyValue(stat.rate);
+                            el.textContent = this.formatNumber(newValue);
+                        }
+                    });
+                }, 1000);
+                
+                setInterval(() => this.setupWorldStats(), 30000);
+            }
+
+            // Utility Functions
+            formatNumber(n) {
+                if (n < 1e3) return n.toLocaleString();
+                if (n < 1e6) return (n / 1e3).toFixed(1) + 'K';
+                if (n < 1e9) return (n / 1e6).toFixed(1) + 'M';
+                return (n / 1e9).toFixed(1) + 'B';
+            }
+
+            formatLargeNumber(n) {
+                return n.toLocaleString();
+            }
+
+            getLifeStage(age) {
+                if (age < 2) return 'Cosmic Infant';
+                if (age < 6) return 'Universal Explorer';
+                if (age < 13) return 'Reality Discoverer';
+                if (age < 20) return 'Dimension Architect';
+                if (age < 30) return 'Galaxy Builder';
+                if (age < 40) return 'Stellar Navigator';
+                if (age < 60) return 'Wisdom Mentor';
+                if (age < 80) return 'Cosmic Sage';
+                return 'Universal Elder';
+            }
+
+            getMoodDisplay(mood) {
+                const moods = {
+                    'happy': '😊 Happy',
+                    'calm': '🧘 Calm',
+                    'energetic': '⚡ Energetic',
+                    'contemplative': '🤔 Contemplative'
+                };
+                return moods[mood] || '✨ Vibing';
+            }
+
+            getGeneration(year) {
+                if (year >= 1928 && year <= 1945) return 'Silent Generation';
+                if (year >= 1946 && year <= 1964) return 'Baby Boomer';
+                if (year >= 1965 && year <= 1980) return 'Generation X';
+                if (year >= 1981 && year <= 1996) return 'Millennial';
+                if (year >= 1997 && year <= 2012) return 'Generation Z';
+                if (year >= 2013) return 'Generation Alpha';
+                return 'Unique Generation';
+            }
+
+            getZodiacSign(day, month) {
+                if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return {sign: "Aquarius", emoji: "♒"};
+                if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) return {sign: "Pisces", emoji: "♓"};
+                if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return {sign: "Aries", emoji: "♈"};
+                if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return {sign: "Taurus", emoji: "♉"};
+                if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return {sign: "Gemini", emoji: "♊"};
+                if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return {sign: "Cancer", emoji: "♋"};
+                if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return {sign: "Leo", emoji: "♌"};
+                if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return {sign: "Virgo", emoji: "♍"};
+                if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return {sign: "Libra", emoji: "♎"};
+                if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return {sign: "Scorpio", emoji: "♏"};
+                if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return {sign: "Sagittarius", emoji: "♐"};
+                return {sign: "Capricorn", emoji: "♑"};
+            }
+
+            getBirthstone(month) {
+                const stones = ["Garnet", "Amethyst", "Aquamarine", "Diamond", "Emerald", "Pearl", "Ruby", "Peridot", "Sapphire", "Opal", "Topaz", "Turquoise"];
+                return stones[month - 1];
+            }
+
+            getChineseZodiac(year) {
+                const animals = ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"];
+                return animals[(year - 1900) % 12];
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.liveTimeCardPro = new LiveTimeCardPro();
+        });
+    </script>
+</body>
+</html>
